@@ -166,31 +166,36 @@ end;
 
 function Library:MakeDraggable(Instance, Cutoff)
     Instance.Active = false;
-
     Instance.InputBegan:Connect(function(Input)
         if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local ObjPos = Vector2.new(
-                Mouse.X - Instance.AbsolutePosition.X,
-                Mouse.Y - Instance.AbsolutePosition.Y
+            local anchorScreenPos = Vector2.new(
+                Instance.AbsolutePosition.X + Instance.AbsoluteSize.X * Instance.AnchorPoint.X,
+                Instance.AbsolutePosition.Y + Instance.AbsoluteSize.Y * Instance.AnchorPoint.Y
             );
-
-            if ObjPos.Y > (Cutoff or 40) then
+            
+            local offset = Vector2.new(
+                Mouse.X - anchorScreenPos.X,
+                Mouse.Y - anchorScreenPos.Y
+            );
+            
+            if offset.Y > (Cutoff or 40) then
                 return;
             end;
-
+            
             while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
-                Instance.Position = UDim2.new(
-                    0,
-                    Mouse.X - ObjPos.X + (Instance.Size.X.Offset * Instance.AnchorPoint.X),
-                    0,
-                    Mouse.Y - ObjPos.Y + (Instance.Size.Y.Offset * Instance.AnchorPoint.Y)
-                );
+                local newAnchorX = Mouse.X - offset.X;
+                local newAnchorY = Mouse.Y - offset.Y;
 
+                local topLeftX = newAnchorX - Instance.AbsoluteSize.X * Instance.AnchorPoint.X;
+                local topLeftY = newAnchorY - Instance.AbsoluteSize.Y * Instance.AnchorPoint.Y;
+                
+                Instance.Position = UDim2.new(0, topLeftX, 0, topLeftY);
+                
                 RenderStepped:Wait();
             end;
         end;
     end)
-end;
+end
 
 function Library:AddToolTip(InfoStr, HoverInstance)
     local X, Y = Library:GetTextBounds(InfoStr, Library.Font, 14);
