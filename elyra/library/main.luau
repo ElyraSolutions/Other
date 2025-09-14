@@ -172,15 +172,17 @@ function Library:MakeDraggable(Instance, Cutoff)
                 Mouse.X - Instance.AbsolutePosition.X,
                 Mouse.Y - Instance.AbsolutePosition.Y
             );
-
+            
             if offset.Y > (Cutoff or 40) then
                 return;
             end;
             
             while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
                 Instance.Position = UDim2.new(
-                    0, Mouse.X - offset.X,
-                    0, Mouse.Y - offset.Y
+                    0,
+                    Mouse.X - offset.X + (Instance.Size.X.Offset * Instance.AnchorPoint.X),
+                    0,
+                    Mouse.Y - offset.Y + (Instance.Size.Y.Offset * Instance.AnchorPoint.Y)
                 );
                 RenderStepped:Wait();
             end;
