@@ -168,29 +168,22 @@ function Library:MakeDraggable(Instance, Cutoff)
     Instance.Active = false;
     Instance.InputBegan:Connect(function(Input)
         if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local anchorScreenPos = Vector2.new(
-                Instance.AbsolutePosition.X + Instance.AbsoluteSize.X * Instance.AnchorPoint.X,
-                Instance.AbsolutePosition.Y + Instance.AbsoluteSize.Y * Instance.AnchorPoint.Y
+            local initialOffset = Vector2.new(
+                Mouse.X - Instance.AbsolutePosition.X,
+                Mouse.Y - Instance.AbsolutePosition.Y
             );
             
-            local offset = Vector2.new(
-                Mouse.X - anchorScreenPos.X,
-                Mouse.Y - anchorScreenPos.Y
-            );
-            
-            if offset.Y > (Cutoff or 40) then
+            if initialOffset.Y > (Cutoff or 40) then
                 return;
             end;
             
             while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) do
-                local newAnchorX = Mouse.X - offset.X;
-                local newAnchorY = Mouse.Y - offset.Y;
-
-                local topLeftX = newAnchorX - Instance.AbsoluteSize.X * Instance.AnchorPoint.X;
-                local topLeftY = newAnchorY - Instance.AbsoluteSize.Y * Instance.AnchorPoint.Y;
-                
-                Instance.Position = UDim2.new(0, topLeftX, 0, topLeftY);
-                
+                Instance.Position = UDim2.new(
+                    0,
+                    Mouse.X - initialOffset.X,
+                    0,
+                    Mouse.Y - initialOffset.Y
+                );
                 RenderStepped:Wait();
             end;
         end;
