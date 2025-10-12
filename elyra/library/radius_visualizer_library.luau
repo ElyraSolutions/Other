@@ -1,4 +1,5 @@
 -- // developed for elyra
+-- // 0.0.0.2
 --!native
 
 local library = {}
@@ -76,6 +77,9 @@ function library.update()
             continue
         end
         if not visualizer.Visible then
+            for _, line in ipairs(visualizer.lines) do
+                line.Visible = false
+            end
             continue
         end
         if current_time - visualizer.last_update < visualizer.UpdateRate then continue end
