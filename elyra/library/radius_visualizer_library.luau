@@ -49,10 +49,13 @@ function library:Destroy()
     if self.destroyed then return end
     self.destroyed = true
     for _, line in ipairs(self.lines) do
-        line:Remove()
+        if line and line.Remove then
+            line:Remove()
+        end
     end
-    for i, instance in ipairs(library.instances) do
-        if instance == self then
+    self.lines = {}
+    for i = #library.instances, 1, -1 do
+        if library.instances[i] == self then
             table.remove(library.instances, i)
             break
         end
@@ -65,11 +68,18 @@ end
 
 function library.update()
     local current_time = tick()
-    for _, visualizer in ipairs(library.instances) do
-        if visualizer.destroyed then continue end
+    for i = #library.instances, 1, -1 do
+        local visualizer = library.instances[i]
+        if visualizer.destroyed then
+            table.remove(library.instances, i)
+            continue
+        end
+        if not visualizer.Visible then
+            continue
+        end
         if current_time - visualizer.last_update < visualizer.UpdateRate then continue end
         visualizer.last_update = current_time
-        if not visualizer.Visible or not visualizer.Position then
+        if not visualizer.Position then
             for _, line in ipairs(visualizer.lines) do
                 line.Visible = false
             end
