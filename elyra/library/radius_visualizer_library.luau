@@ -23,6 +23,7 @@ function library.new()
     self.Segments = 24
     self.Color = color3_rgb(255, 255, 255)
     self.Thickness = 2
+    self.Transparency = 1
     self.Rotation = 0
     self.Position = nil
     self.Visible = false
@@ -34,7 +35,7 @@ function library.new()
     for i = 1, self.Segments do
         local line = Drawing.new("Line")
         line.Thickness = self.Thickness
-        line.Transparency = 1
+        line.Transparency = self.Transparency
         line.Visible = false
         table.insert(self.lines, line)
     end
@@ -92,7 +93,7 @@ function library.update()
                 for i = 1, visualizer.Segments do
                     local line = Drawing.new("Line")
                     line.Thickness = visualizer.Thickness
-                    line.Transparency = 1
+                    line.Transparency = visualizer.Transparency
                     line.Color = visualizer.Color
                     line.Visible = false
                     table.insert(visualizer.lines, line)
@@ -117,6 +118,7 @@ function library.update()
                     visualizer.lines[i].To = vector2_new(screen_position_2.X, screen_position_2.Y)
                     visualizer.lines[i].Color = visualizer.Color
                     visualizer.lines[i].Thickness = visualizer.Thickness
+                    visualizer.lines[i].Transparency = visualizer.Transparency
                     visualizer.lines[i].Visible = true
                 else
                     visualizer.lines[i].Visible = false
