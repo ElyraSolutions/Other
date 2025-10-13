@@ -1,30 +1,19 @@
 local httpService = game:GetService('HttpService')
 local ThemeManager = {} do
-	ThemeManager.Folder = 'elyra'
+	ThemeManager.Folder = 'LinoriaLibSettings'
 	-- if not isfolder(ThemeManager.Folder) then makefolder(ThemeManager.Folder) end
 
 	ThemeManager.Library = nil
-    ThemeManager.BuiltInThemes = {
-      default = {1, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"3c3c3c","AccentColor":"0996c8","BackgroundColor":"232323","OutlineColor":"141414","RiskColor":"ff7878"}')},
-      bbot = {2, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1e1e","AccentColor":"7e48a3","BackgroundColor":"232323","OutlineColor":"141414","RiskColor":"ff7878"}')},
-      fatality = {3, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1842","AccentColor":"c50754","BackgroundColor":"191335","OutlineColor":"3c355d","RiskColor":"ff7878"}')},
-      jester = {4, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"db4467","BackgroundColor":"1c1c1c","OutlineColor":"373737","RiskColor":"ff7878"}')},
-      mint = {5, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"3db488","BackgroundColor":"1c1c1c","OutlineColor":"373737","RiskColor":"ff7878"}')},
-      tokyo_night = {6, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"191925","AccentColor":"6759b3","BackgroundColor":"16161f","OutlineColor":"323232","RiskColor":"ff7878"}')},
-      ubuntu = {7, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"3e3e3e","AccentColor":"e2581e","BackgroundColor":"323232","OutlineColor":"191919","RiskColor":"ff7878"}')},
-      quartz = {8, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"232330","AccentColor":"426e87","BackgroundColor":"1d1b26","OutlineColor":"27232f","RiskColor":"ff7878"}')},
-      cyberpunk = {9, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1a1a1a","AccentColor":"ff0099","BackgroundColor":"0d0d0d","OutlineColor":"333333","RiskColor":"ff7878"}')},
-      neon = {10, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"0a0a0a","AccentColor":"00ffcc","BackgroundColor":"000000","OutlineColor":"1a1a1a","RiskColor":"ff7878"}')},
-      solarized = {11, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"002b36","AccentColor":"d33682","BackgroundColor":"073642","OutlineColor":"586e75","RiskColor":"ff7878"}')},
-      dracula = {12, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"282a36","AccentColor":"bd93f9","BackgroundColor":"1e1f29","OutlineColor":"44475a","RiskColor":"ff7878"}')},
-      nord = {13, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"2e3440","AccentColor":"88c0d0","BackgroundColor":"3b4252","OutlineColor":"4c566a","RiskColor":"ff7878"}')},
-      monokai = {14, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"272822","AccentColor":"f92672","BackgroundColor":"1e1f1c","OutlineColor":"49483e","RiskColor":"ff7878"}')},
-      ocean = {15, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1a1a2e","AccentColor":"00bcd4","BackgroundColor":"0f0f1a","OutlineColor":"2d2d44","RiskColor":"ff7878"}')},
-      synthwave = {16, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1e2e","AccentColor":"ff7edb","BackgroundColor":"161622","OutlineColor":"2a2a3a","RiskColor":"ff7878"}')},
-      matrix = {17, httpService:JSONDecode('{"FontColor":"00ff00","MainColor":"000000","AccentColor":"00ff00","BackgroundColor":"000000","OutlineColor":"00ff00","RiskColor":"ff7878"}')},
-      cherry = {18, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"3c3c3c","AccentColor":"ff4d5e","BackgroundColor":"232323","OutlineColor":"141414","RiskColor":"ff7878"}')},
-      atlanta = {19, httpService:JSONDecode('{"FontColor":"999999","MainColor":"1c000a","AccentColor":"f82f80","BackgroundColor":"17000c","OutlineColor":"350016","RiskColor":"ff7878"}')}
-  	}
+	ThemeManager.BuiltInThemes = {
+		['Default'] 		= { 1, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"0f0f0f","AccentColor":"f184ff","BackgroundColor":"141414","OutlineColor":"323232"}') },
+		['BBot'] 			= { 2, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1e1e","AccentColor":"7e48a3","BackgroundColor":"232323","OutlineColor":"141414"}') },
+		['Fatality']		= { 3, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"1e1842","AccentColor":"c50754","BackgroundColor":"191335","OutlineColor":"3c355d"}') },
+		['Jester'] 			= { 4, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"db4467","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
+		['Mint'] 			= { 5, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"242424","AccentColor":"3db488","BackgroundColor":"1c1c1c","OutlineColor":"373737"}') },
+		['Tokyo Night'] 	= { 6, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"191925","AccentColor":"6759b3","BackgroundColor":"16161f","OutlineColor":"323232"}') },
+		['Ubuntu'] 			= { 7, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"3e3e3e","AccentColor":"e2581e","BackgroundColor":"323232","OutlineColor":"191919"}') },
+		['Quartz'] 			= { 8, httpService:JSONDecode('{"FontColor":"ffffff","MainColor":"232330","AccentColor":"426e87","BackgroundColor":"1d1b26","OutlineColor":"27232f"}') },
+	}
 
 	function ThemeManager:ApplyTheme(theme)
 		local customThemeData = self:GetCustomTheme(theme)
@@ -87,11 +76,11 @@ local ThemeManager = {} do
 	end
 
 	function ThemeManager:CreateThemeManager(groupbox)
-		groupbox:AddLabel('background color'):AddColorPicker('BackgroundColor', { Default = self.Library.BackgroundColor });
-		groupbox:AddLabel('main color')	:AddColorPicker('MainColor', { Default = self.Library.MainColor });
-		groupbox:AddLabel('accent color'):AddColorPicker('AccentColor', { Default = self.Library.AccentColor });
-		groupbox:AddLabel('outline color'):AddColorPicker('OutlineColor', { Default = self.Library.OutlineColor });
-		groupbox:AddLabel('font color')	:AddColorPicker('FontColor', { Default = self.Library.FontColor });
+		groupbox:AddLabel('Background color'):AddColorPicker('BackgroundColor', { Default = self.Library.BackgroundColor });
+		groupbox:AddLabel('Main color')	:AddColorPicker('MainColor', { Default = self.Library.MainColor });
+		groupbox:AddLabel('Accent color'):AddColorPicker('AccentColor', { Default = self.Library.AccentColor });
+		groupbox:AddLabel('Outline color'):AddColorPicker('OutlineColor', { Default = self.Library.OutlineColor });
+		groupbox:AddLabel('Font color')	:AddColorPicker('FontColor', { Default = self.Library.FontColor });
 
 		local ThemesArray = {}
 		for Name, Theme in next, self.BuiltInThemes do
@@ -101,11 +90,11 @@ local ThemeManager = {} do
 		table.sort(ThemesArray, function(a, b) return self.BuiltInThemes[a][1] < self.BuiltInThemes[b][1] end)
 
 		groupbox:AddDivider()
-		groupbox:AddDropdown('ThemeManager_ThemeList', { Text = 'theme list', Values = ThemesArray, Default = 1 })
+		groupbox:AddDropdown('ThemeManager_ThemeList', { Text = 'Theme list', Values = ThemesArray, Default = 1 })
 
-		groupbox:AddButton('set as default', function()
+		groupbox:AddButton('Set as default', function()
 			self:SaveDefault(Options.ThemeManager_ThemeList.Value)
-			self.Library:Notify(string.format('set default theme to %q', Options.ThemeManager_ThemeList.Value))
+			self.Library:Notify(string.format('Set default theme to %q', Options.ThemeManager_ThemeList.Value))
 		end)
 
 		Options.ThemeManager_ThemeList:OnChanged(function()
@@ -113,28 +102,28 @@ local ThemeManager = {} do
 		end)
 
 		groupbox:AddDivider()
-		groupbox:AddInput('ThemeManager_CustomThemeName', { Text = 'custom theme name' })
-		groupbox:AddDropdown('ThemeManager_CustomThemeList', { Text = 'custom themes', Values = self:ReloadCustomThemes(), AllowNull = true, Default = 1 })
+		groupbox:AddInput('ThemeManager_CustomThemeName', { Text = 'Custom theme name' })
+		groupbox:AddDropdown('ThemeManager_CustomThemeList', { Text = 'Custom themes', Values = self:ReloadCustomThemes(), AllowNull = true, Default = 1 })
 		groupbox:AddDivider()
 		
-		groupbox:AddButton('save theme', function() 
+		groupbox:AddButton('Save theme', function() 
 			self:SaveCustomTheme(Options.ThemeManager_CustomThemeName.Value)
 
 			Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
 			Options.ThemeManager_CustomThemeList:SetValue(nil)
-		end):AddButton('load theme', function() 
+		end):AddButton('Load theme', function() 
 			self:ApplyTheme(Options.ThemeManager_CustomThemeList.Value) 
 		end)
 
-		groupbox:AddButton('refresh list', function()
+		groupbox:AddButton('Refresh list', function()
 			Options.ThemeManager_CustomThemeList:SetValues(self:ReloadCustomThemes())
 			Options.ThemeManager_CustomThemeList:SetValue(nil)
 		end)
 
-		groupbox:AddButton('set as default', function()
+		groupbox:AddButton('Set as default', function()
 			if Options.ThemeManager_CustomThemeList.Value ~= nil and Options.ThemeManager_CustomThemeList.Value ~= '' then
 				self:SaveDefault(Options.ThemeManager_CustomThemeList.Value)
-				self.Library:Notify(string.format('set default theme to %q', Options.ThemeManager_CustomThemeList.Value))
+				self.Library:Notify(string.format('Set default theme to %q', Options.ThemeManager_CustomThemeList.Value))
 			end
 		end)
 
@@ -169,7 +158,7 @@ local ThemeManager = {} do
 
 	function ThemeManager:SaveCustomTheme(file)
 		if file:gsub(' ', '') == '' then
-			return self.Library:Notify('invalid file name for theme (empty)', 3)
+			return self.Library:Notify('Invalid file name for theme (empty)', 3)
 		end
 
 		local theme = {}
@@ -241,7 +230,7 @@ local ThemeManager = {} do
 
 	function ThemeManager:CreateGroupBox(tab)
 		assert(self.Library, 'Must set ThemeManager.Library first!')
-		return tab:AddLeftGroupbox('themes')
+		return tab:AddLeftGroupbox('Themes')
 	end
 
 	function ThemeManager:ApplyToTab(tab)
